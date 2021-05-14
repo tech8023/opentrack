@@ -20,7 +20,7 @@ endfunction()
 set(opentrack_install-debug-info TRUE CACHE INTERNAL "" FORCE)
 set(opentrack_maintainer-mode TRUE CACHE INTERNAL "" FORCE)
 
-setq(Qt5_DIR "../qt-5.12.0/lib/cmake/Qt5")
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_LIST_DIR}/../qt-msvc-6.1.0")
 
 setq(EIGEN3_INCLUDE_DIR "eigen")
 setq(OpenCV_DIR "opencv/build")
@@ -36,10 +36,3 @@ setq(SDK_RIFT_140 "ovr_sdk_win_1.43.0/LibOVR")
 setq(SDK_VALVE_STEAMVR "steamvr")
 setq(SDK_VJOYSTICK "vjoystick")
 
-set(Qt5_DIR "c:/qt/qt-5.14.0/lib/cmake/Qt5" CACHE PATH "" FORCE)
-set(Qt5Core_DIR "${Qt5_DIR}Core" CACHE PATH "" FORCE)
-set(Qt5Gui_DIR "${Qt5_DIR}Gui" CACHE PATH "" FORCE)
-
-if(CMAKE_GENERATOR STREQUAL "NMake Makefiles")
-    set(CMAKE_MAKE_PROGRAM "jom" CACHE STRING "" FORCE)
-endif()
