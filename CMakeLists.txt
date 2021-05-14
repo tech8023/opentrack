@@ -60,6 +60,7 @@ endif()
 
 include(CMakeParseArguments)
 
+include(opentrack-policy)
 include(opentrack-load-user-settings)
 include(opentrack-mrproper)
 
