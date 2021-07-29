@@ -146,8 +146,9 @@ if(MSVC)
     #C4266 - no override available for virtual member function from base type, function is hidden
     #C4928 - illegal copy-initialization, more than one user-defined conversion has been implicitly applied
     #C4200: nonstandard extension used: zero-sized array in struct/union
+    #C4828: The file contains a character starting at offset 0x1433 that is illegal in the current source character set (codepage 65001).
 
-    set(warns-disable 4530 4577 4789 4244 4702 4530 4244 4127 4458 4456 4251 4100 4702 4457 4200)
+    set(warns-disable 4530 4577 4789 4244 4702 4530 4244 4127 4458 4456 4251 4100 4702 4457 4200 4828)
 
     foreach(i ${warns-disable})
         add_compile_options(-wd${i})

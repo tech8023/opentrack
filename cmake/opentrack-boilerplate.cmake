@@ -170,6 +170,7 @@ function(otr_module n_)
         add_library(${n} ${link-mode} "${${n}-all}")
         set_property(TARGET "${n}" PROPERTY PREFIX "")
     endif()
+	set_property(TARGET "${n}" PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 
     if(NOT arg_NO-QT)
         otr_qt2("${n}")

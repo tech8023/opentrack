@@ -26,7 +26,7 @@
 #include <QMessageBox>
 #include <QDebug>
 
-QMutex device_list::mtx(QMutex::Recursive);
+QRecursiveMutex device_list::mtx;
 
 template<typename F>
 auto with_vr_lock(F&& fun) -> decltype(fun(vr_t(), vr_error_t()))
@@ -285,7 +285,7 @@ steamvr_dialog::steamvr_dialog()
     connect(ui.buttonBox, SIGNAL(rejected()), this, SLOT(doCancel()));
 
     ui.device->clear();
-    ui.device->addItem("First available", QVariant(QVariant::String));
+    ui.device->addItem("First available", QString{});
 
     device_list list;
     for (const device_spec& spec : list.devices())

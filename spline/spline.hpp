@@ -11,7 +11,6 @@
 #include "options/options.hpp"
 #include "axis-opts.hpp"
 #include "export.hpp"
-#include "compat/mutex.hpp"
 
 #include <cstddef>
 #include <vector>
@@ -21,6 +20,7 @@
 #include <QObject>
 #include <QPointF>
 #include <QString>
+#include <QRecursiveMutex>
 #include <QMetaObject>
 
 namespace spline_detail {
@@ -103,6 +103,15 @@ struct OTR_SPLINE_EXPORT base_spline : base_spline_, spline_modify_mixin, spline
     ~base_spline() override;
 };
 
+struct mutex
+{
+    mutable QRecursiveMutex inner;
+    auto* operator*() { return &inner; }
+    auto* operator->() { return &inner; }
+    mutex() = default;
+    mutex(const mutex&) {}
+};
+
 class OTR_SPLINE_EXPORT spline : public base_spline
 {
     using f = float;
@@ -118,12 +127,12 @@ class OTR_SPLINE_EXPORT spline : public base_spline
     void disconnect_signals();
     void invalidate_settings_();
 
-    mutex mtx { mutex::Recursive };
     std::shared_ptr<settings> s;
     QMetaObject::Connection conn_points, conn_maxx, conn_maxy;
 
     std::shared_ptr<QObject> ctx { std::make_shared<QObject>() };
 
+    mutable mutex mtx;
     mutable QPointF last_input_value{-1, -1};
     mutable std::vector<float> data = std::vector<float>(value_count, magic_fill_value);
     mutable points_t points;

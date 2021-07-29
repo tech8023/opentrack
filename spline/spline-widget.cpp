@@ -345,7 +345,7 @@ void spline_widget::drawLine(QPainter& painter, const QPointF& start, const QPoi
 
 void spline_widget::mousePressEvent(QMouseEvent *e)
 {
-    if (!config || !isEnabled() || !is_in_bounds(e->localPos()) || preview_only)
+    if (!config || !isEnabled() || !is_in_bounds(e->position()) || preview_only)
         return;
 
     const double min_dist = min_pt_distance();
@@ -360,7 +360,7 @@ void spline_widget::mousePressEvent(QMouseEvent *e)
 
         for (int i = 0; i < points.size(); i++)
         {
-            if (point_within_pixel(points[i], e->localPos()))
+            if (point_within_pixel(points[i], e->position()))
             {
                 is_touching_point = true;
                 moving_control_point_idx = i;
@@ -371,7 +371,7 @@ void spline_widget::mousePressEvent(QMouseEvent *e)
         if (!is_touching_point)
         {
             bool too_close = false;
-            const QPointF pos = pixel_to_point(e->localPos());
+            const QPointF pos = pixel_to_point(e->position());
 
             for (QPointF const& point : points)
             {
@@ -385,7 +385,7 @@ void spline_widget::mousePressEvent(QMouseEvent *e)
 
             if (!too_close)
             {
-                config->add_point(pixel_to_point(e->localPos()));
+                config->add_point(pixel_to_point(e->position()));
                 show_tooltip(e->pos());
             }
         }
@@ -399,7 +399,7 @@ void spline_widget::mousePressEvent(QMouseEvent *e)
         {
             for (int i = 0; i < points.size(); i++)
             {
-                if (point_within_pixel(points[i], e->localPos()))
+                if (point_within_pixel(points[i], e->position()))
                 {
                     config->remove_point(i);
                     draw_function = true;
@@ -434,7 +434,7 @@ void spline_widget::mouseMoveEvent(QMouseEvent *e)
     if (i >= 0 && i < sz)
     {
         const double min_dist = min_pt_distance();
-        QPointF new_pt = pixel_to_point(e->localPos());
+        QPointF new_pt = pixel_to_point(e->position());
 
         const bool has_prev = i > 0, has_next = i + 1 < points.size();
 
@@ -469,7 +469,7 @@ void spline_widget::mouseMoveEvent(QMouseEvent *e)
     else if (sz)
     {
         int i;
-        bool is_on_point = is_on_pt(e->localPos(), &i);
+        bool is_on_point = is_on_pt(e->position(), &i);
 
         if (is_on_point)
         {
@@ -479,7 +479,7 @@ void spline_widget::mouseMoveEvent(QMouseEvent *e)
         else
         {
             setCursor(Qt::ArrowCursor);
-            if (is_in_bounds(e->localPos()))
+            if (is_in_bounds(e->position()))
                 show_tooltip(e->pos());
             else
                 QToolTip::hideText();
@@ -498,13 +498,13 @@ void spline_widget::mouseReleaseEvent(QMouseEvent *e)
     if (e->button() == Qt::LeftButton)
     {
         {
-            if (is_on_pt(e->localPos(), nullptr))
+            if (is_on_pt(e->position(), nullptr))
                 setCursor(Qt::CrossCursor);
             else
                 setCursor(Qt::ArrowCursor);
         }
 
-        if (is_in_bounds(e->localPos()))
+        if (is_in_bounds(e->position()))
             show_tooltip(e->pos());
         else
             QToolTip::hideText();

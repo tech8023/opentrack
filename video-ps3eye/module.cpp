@@ -281,3 +281,8 @@ void settings::set_exposure()
     ++ptr.in.settings_updated;
     std::atomic_thread_fence(std::memory_order_seq_cst);
 }
+
+#ifdef _MSC_VER
+// workaround bug in cmake. newest MSVC doesn't create dot.lib with no exported symbols
+extern "C" __declspec(dllexport) int _empty(void) { return 0; }
+#endif

@@ -51,6 +51,8 @@ if(CMAKE_PROJECT_NAME STREQUAL "opencv")
 endif()
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+cmake_policy(SET CMP0069 NEW)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
 add_compile_options(-Zi -Zf -Zo -bigobj -cgthreads1 -vd0)
